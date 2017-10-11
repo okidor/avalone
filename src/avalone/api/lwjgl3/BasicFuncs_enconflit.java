@@ -41,7 +41,7 @@ import org.lwjgl.opengl.GLContext;
 
 import avalone.api.util.Point;
 
-public class BasicFuncs 
+public class BasicFuncs_enconflit
 {
 	/*protected long window;
 	protected long[] otherWindows;*/
@@ -66,7 +66,7 @@ public class BasicFuncs
 	private double mouseScrollX;
 	private double mouseScrollY;
 	
-	protected BasicFuncs(int width, int height, String title)
+	protected BasicFuncs_enconflit(int width, int height, String title)
 	{
 		scroll = new Point();
 		modif = new Point();

@@ -19,6 +19,15 @@ public class Complex
         return new Complex(newReal,newImaginary);
     }
 	
+	public void squareSelf()
+    {
+		double newReal = real * real - imaginary*imaginary;
+		double newImaginary = 2*real*imaginary;
+		
+        real = newReal;
+        imaginary = newImaginary;
+    }
+	
 	public Complex add(Complex other)
 	{
 		double newReal = real + other.real;
@@ -41,6 +50,7 @@ public class Complex
 	
 	public double abs()
 	{
-		return Math.hypot(real, imaginary);
+		//return Math.hypot(real, imaginary);
+		return Math.sqrt(real * real + imaginary * imaginary);
 	}
 }

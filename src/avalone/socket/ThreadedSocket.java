@@ -33,7 +33,7 @@ public class ThreadedSocket extends Thread//implements Runnable
 		try 
 		{
 			//socket = new Socket(InetAddress.getLocalHost(),5000);
-			socket = new Socket(InetAddress.getByName("78.203.12.33")/*.getLocalHost()*/,25565);
+			socket = new Socket(InetAddress/*.getByName("78.203.12.33")*/.getLocalHost(),25565);
 			out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
 			waitId(in);

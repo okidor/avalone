@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import avalone.api.util.Point;
 
@@ -13,9 +15,9 @@ public class ThreadedServerSocket implements Runnable
 {
 	private Socket socket;
 	private final int clientId;
-	private ArrayList<Point> playerPos;
+	private HashMap<Integer,Point> playerPos;
 	
-	public ThreadedServerSocket(Socket socket,int clientId,ArrayList<Point> playerPos)
+	public ThreadedServerSocket(Socket socket,int clientId,HashMap<Integer,Point> playerPos)
 	{
 		this.socket = socket;
 		this.clientId = clientId;
@@ -49,14 +51,19 @@ public class ThreadedServerSocket implements Runnable
 			sendAllPos(out);
 		}
 		System.out.println("end of reception");
+		playerPos.remove(clientId);
 		socket.close();
 	}
 	
 	private void sendAllPos(PrintWriter out)
 	{
-		for(int i = 0;i < playerPos.size();i++)
+		/*for(int i = 0;i < playerPos.size();i++)
 		{
 			out.print(playerPos.get(i).x + " " + playerPos.get(i).y + " ");
+		}*/
+		for(Point pos : playerPos.values())
+		{
+			out.print(pos.x + " " + pos.y + " ");
 		}
 		out.println();
 	}

@@ -5,11 +5,11 @@ import avalone.api.util.Point;
 
 public class APITest 
 {
-	 private GLAPI glapi;
+	 private AvaloneGLAPI glapi;
 	 
 	 public APITest() 
 	 {
-		 glapi = new GLAPI(1000,500,"APITest");
+		 glapi = new AvaloneGLAPI(1000,500,"APITest");
 	     loop();
 	 }
 	 

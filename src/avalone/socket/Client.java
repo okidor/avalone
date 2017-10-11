@@ -1,6 +1,5 @@
 package avalone.socket;
 
-import java.net.Socket;
 import java.util.ArrayList;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
@@ -15,11 +14,9 @@ public class Client
 	public Client()
 	{
 		p = new Point();
-		//Thread thread = new Thread(new ThreadedSocket(p));
 		playerPos = new ArrayList<Point>();
 		ThreadedSocket thread = new ThreadedSocket(p,playerPos);
 		thread.start();
-		//System.out.println(thread.getId() + ", " + Thread.currentThread().getId());
 		glapi = new AvaloneGLAPI(1200,600,"multi");
 		loop();
 		thread.disconnect();
