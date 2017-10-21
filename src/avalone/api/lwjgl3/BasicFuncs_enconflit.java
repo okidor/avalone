@@ -1,6 +1,5 @@
 package avalone.api.lwjgl3;
 
-import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -24,7 +23,6 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
-import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -35,9 +33,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
 import avalone.api.util.Point;
 
@@ -133,22 +130,22 @@ public class BasicFuncs_enconflit
 	
 	public boolean windowShouldNotClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_FALSE ;
+    	return !glfwWindowShouldClose(windows[counter]);
     }
 	
 	public boolean windowShouldClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_TRUE ;
+    	return glfwWindowShouldClose(windows[counter]);
     }
 	
 	public boolean lastSubWindowShouldNotClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_FALSE ;
+    	return !glfwWindowShouldClose(windows[counter]);
     }
 	
 	public boolean lastSubWindowwindowShouldClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_TRUE ;
+    	return glfwWindowShouldClose(windows[counter]);
     }
 
     public void glLoopBegin()
@@ -214,10 +211,10 @@ public class BasicFuncs_enconflit
     		destroyLastSubWindow();
     	}
     	glfwDestroyWindow(windows[0]);
-    	keyCallbacks[0].release();
-    	scrollCallbacks[0].release();
+    	keyCallbacks[0].free();
+    	scrollCallbacks[0].free();
     	glfwTerminate();
-   	 	errorCallback.release();
+   	 	errorCallback.free();
     }
     
     public int abs(int nb)
@@ -494,7 +491,7 @@ public class BasicFuncs_enconflit
 			    	//System.out.println(glapi.lastSubWindowShouldNotClose());
 			    	try 
 			    	{
-			    		Thread.currentThread().sleep(100);
+			    		Thread.sleep(100);
 			    	} 
 			    	catch (InterruptedException e) 
 			    	{
@@ -519,16 +516,16 @@ public class BasicFuncs_enconflit
     public void destroyLastSubWindow()
     {
     	glfwDestroyWindow(windows[counter]);
-    	keyCallbacks[counter].release();
-    	scrollCallbacks[counter].release();
+    	keyCallbacks[counter].free();
+    	scrollCallbacks[counter].free();
     	counter--;
     	glfwMakeContextCurrent(windows[counter]);
     }
 
     public void initOpenGL(int width,int heigth, String title)
     {
-    	glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
-		if ( glfwInit() != GL11.GL_TRUE )
+    	GLFWErrorCallback.createPrint(System.err).set();
+		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
 	 
 	    glfwDefaultWindowHints();
@@ -550,7 +547,7 @@ public class BasicFuncs_enconflit
 	        public void invoke(long window, int key, int scancode, int action, int mods) 
 	        {
 	            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-	            	glfwSetWindowShouldClose(window, GL_TRUE); // We will detect this in our rendering loop
+	            	glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
 	            else if(action == GLFW_PRESS)
 	            {
 	            	keyPile.add(key);
@@ -570,14 +567,13 @@ public class BasicFuncs_enconflit
 	        	mouseScrollY = yoffset;
 	        }
 	    });
-	     ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	     glfwSetWindowPos(windows[indice], (GLFWvidmode.width(vidmode) - width) / 2,
-	    		 		  		  (GLFWvidmode.height(vidmode) - heigth) / 2);
+	     GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	     glfwSetWindowPos(windows[indice], (vidmode.width() - width) / 2, (vidmode.height() - heigth) / 2);
 	     glfwMakeContextCurrent(windows[indice]);
 	     //glfwSwapInterval(0);
 	     glfwShowWindow(windows[indice]);
 	     
-	     GLContext.createFromCurrent();
+	     GL.createCapabilities();
 	     
 	     glOrtho(0.0, width, 0.0, heigth, -1.0, 1.0);
 	     glViewport(0,0,width,heigth);

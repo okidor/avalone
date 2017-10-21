@@ -1,6 +1,5 @@
 package avalone.api.lwjgl3;
 
-import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -24,7 +23,6 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
-import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -36,9 +34,8 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
 import avalone.api.util.Point;
 
@@ -61,7 +58,6 @@ public class BasicFuncs
 	private boolean leftClick;
 	private boolean rightClick;
 
-	private double lastFrame;
 	private long variableYieldTime, lastTime;
 	
 	protected Point scroll;
@@ -89,7 +85,7 @@ public class BasicFuncs
 		initKeys();
 		counter = 0;
 		threadCounter = -1;
-		loadNatives();
+		//loadNatives();
     	initOpenGL(width, height, title);
 	}
 	
@@ -124,10 +120,10 @@ public class BasicFuncs
 		keys.put(GLFW_KEY_SEMICOLON, ';');
 		keys.put(GLFW_KEY_COMMA, ',');
 		keys.put(GLFW_KEY_SPACE, ' ');
-		keys.put(GLFW_KEY_LEFT, '←');
-		keys.put(GLFW_KEY_RIGHT, '→');
-		keys.put(GLFW_KEY_UP, '↑');
-		keys.put(GLFW_KEY_DOWN, '↓');
+		keys.put(GLFW_KEY_LEFT, '\u2190');
+		keys.put(GLFW_KEY_RIGHT, '\u2192');
+		keys.put(GLFW_KEY_UP, '\u2191');
+		keys.put(GLFW_KEY_DOWN, '\u2193');
 		azertyTransform();
 	}
 	
@@ -144,22 +140,22 @@ public class BasicFuncs
 	
 	public boolean windowShouldNotClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_FALSE ;
+    	return !glfwWindowShouldClose(windows[counter]);
     }
 	
 	public boolean windowShouldClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_TRUE ;
+    	return glfwWindowShouldClose(windows[counter]);
     }
 	
 	public boolean lastSubWindowShouldNotClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_FALSE ;
+    	return !glfwWindowShouldClose(windows[counter]);
     }
 	
-	public boolean lastSubWindowwindowShouldClose()
+	public boolean lastSubWindowShouldClose()
     {
-    	return glfwWindowShouldClose(windows[counter]) == GL_TRUE ;
+    	return glfwWindowShouldClose(windows[counter]);
     }
 
     public void glLoopBegin()
@@ -225,10 +221,10 @@ public class BasicFuncs
     		destroyLastSubWindow();
     	}
     	glfwDestroyWindow(windows[0]);
-    	keyCallbacks[0].release();
-    	scrollCallbacks[0].release();
+    	keyCallbacks[0].free();
+    	scrollCallbacks[0].free();
     	glfwTerminate();
-   	 	errorCallback.release();
+   	 	errorCallback.free();
     }
     
     public int abs(int nb)
@@ -541,7 +537,7 @@ public class BasicFuncs
 			    	//System.out.println(glapi.lastSubWindowShouldNotClose());
 			    	try 
 			    	{
-			    		Thread.currentThread().sleep(100);
+			    		Thread.sleep(100);
 			    	} 
 			    	catch (InterruptedException e) 
 			    	{
@@ -566,16 +562,16 @@ public class BasicFuncs
     public void destroyLastSubWindow()
     {
     	glfwDestroyWindow(windows[counter]);
-    	keyCallbacks[counter].release();
-    	scrollCallbacks[counter].release();
+    	keyCallbacks[counter].free();
+    	scrollCallbacks[counter].free();
     	counter--;
     	glfwMakeContextCurrent(windows[counter]);
     }
 
     public void initOpenGL(int width,int heigth, String title)
     {
-    	glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
-		if ( glfwInit() != GL11.GL_TRUE )
+    	errorCallback = GLFWErrorCallback.createPrint(System.err).set();
+		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
 	 
 	    glfwDefaultWindowHints();
@@ -597,7 +593,7 @@ public class BasicFuncs
 	        public void invoke(long window, int key, int scancode, int action, int mods) 
 	        {
 	            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-	            	glfwSetWindowShouldClose(window, GL_TRUE); // We will detect this in our rendering loop
+	            	glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
 	            else if(action == GLFW_PRESS)
 	            {
 	            	keyPile.add(key);
@@ -646,14 +642,13 @@ public class BasicFuncs
 	        	mouseScrollY = yoffset;
 	        }
 	    });
-	     ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	     glfwSetWindowPos(windows[indice], (GLFWvidmode.width(vidmode) - width) / 2,
-	    		 		  		  (GLFWvidmode.height(vidmode) - heigth) / 2);
+	     GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	     glfwSetWindowPos(windows[indice], (vidmode.width() - width) / 2, (vidmode.height() - heigth) / 2);
 	     glfwMakeContextCurrent(windows[indice]);
 	     //glfwSwapInterval(0);
 	     glfwShowWindow(windows[indice]);
 	     
-	     GLContext.createFromCurrent();
+	     GL.createCapabilities();
 	     
 	     glOrtho(0.0, width, 0.0, heigth, -1.0, 1.0);
 	     glViewport(0,0,width,heigth);
@@ -666,7 +661,7 @@ public class BasicFuncs
     	glfwSetWindowTitle(windows[counter], title);
     }
 	
-    private void loadNatives()
+    /*private void loadNatives()
 	{
 	     System.out.println("[AvaloneGLAPI] Loading LWJGL native files...");
 	     String arch = findArchAndOS();
@@ -696,7 +691,7 @@ public class BasicFuncs
 	         // grab the resource, through, this time from the `URLClassLoader` object
 	         // rather than from the `ClassLoader` class
 	         final InputStream input = urlClassLoader.getResourceAsStream( classAsPath );*/
-	     }
+	     /*}
 	     catch(Exception e)
 	     {
 	         System.err.println("[AvaloneGLAPI] Failed to load natives\nYour application will shut down...");
@@ -733,5 +728,5 @@ public class BasicFuncs
 			 System.exit(1);
 			 return "";
 		 }
-	 }
+	 }*/
 }

@@ -14,8 +14,6 @@ import org.lwjgl.glfw.GLFW;
 
 import avalone.api.util.Point;
 import avalone.api.util.TexturesLoader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
 public class AvaloneGLAPI extends Geometry
 {

@@ -1,6 +1,5 @@
 package avalone.api.lwjgl3;
 
-import static org.lwjgl.opengl.GL11.*;
 import avalone.api.util.Point;
 
 public class APITest 

@@ -1,5 +1,5 @@
 .settings/*
-lwjgl.jar
 .classpath
 .project
 bin/*
+save/*

@@ -9,7 +9,6 @@ public class Player extends AliveEntity
 {
 	public Point mouse;
 	public int zoom;
-	private boolean transiting;
 	private boolean wasButtonDown;
 	public int xp; public int level;
 	private boolean usingItemInHand;
@@ -118,18 +117,18 @@ public class Player extends AliveEntity
 			jump();
 		}
 		currentKey = glapi.lastPressedKey();
-		char latestKey = glapi.lastPressedKeyBetween('q','d','←','→');
+		char latestKey = glapi.lastPressedKeyBetween('q','d','\u2190','\u2192');
 		/*if(latestKey != 0)
 		{
 			System.out.println(latestKey);
 		}*/
-		if(latestKey == 'q' || latestKey == '←')
+		if(latestKey == 'q' || latestKey == '\u2190')
 		{
 			pos.x = pos.x - Const.depl;
 			turned = 0;
 			Physic.checkCollisionFromLeft(this);
 		}
-		if(latestKey == 'd' || latestKey == '→')
+		if(latestKey == 'd' || latestKey == '\u2192')
 		{
 			pos.x = pos.x + Const.depl;
 			turned = 2;

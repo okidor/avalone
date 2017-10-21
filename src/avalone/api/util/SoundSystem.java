@@ -1,15 +1,11 @@
 package avalone.api.util;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Scanner;
  
 import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 //import org.lwjgl.util.WaveData;
 
@@ -54,14 +50,12 @@ public class SoundSystem
 		}
 		//Loads the wave file from your file system
 		FileInputStream fin = null;
-		BufferedInputStream bin = null;
 		try 
 		{
 			File f = new File(System.getProperty("user.dir") + File.separator + "sound" + File.separator + path + ".wav");
 			//System.out.println(f.getAbsolutePath());
 			//System.getProperty("user.dir")
 			fin = new java.io.FileInputStream(f);
-			bin = new BufferedInputStream(fin);
 			//System.out.println(fin.toString());
 		} 
 		catch (java.io.FileNotFoundException ex) 
@@ -95,8 +89,8 @@ public class SoundSystem
 		AL10.alSourcei(source.get(0), AL10.AL_BUFFER,   buffer.get(0) );
 		AL10.alSourcef(source.get(0), AL10.AL_PITCH,    1.0f          );
 		AL10.alSourcef(source.get(0), AL10.AL_GAIN,     1.0f          );
-		AL10.alSource (source.get(0), AL10.AL_POSITION, sourcePos     );
-		AL10.alSource (source.get(0), AL10.AL_VELOCITY, sourceVel     );
+		AL10.alSourcefv (source.get(0), AL10.AL_POSITION, sourcePos     );
+		AL10.alSourcefv (source.get(0), AL10.AL_VELOCITY, sourceVel     );
 		//AL10.alSourcei(source.get(0), AL10.AL_LOOPING,  AL10.AL_TRUE  ); //loop
  
 		// Do another error check and return.
@@ -115,9 +109,9 @@ public class SoundSystem
 	 */
 	void setListenerValues() 
 	{
-		AL10.alListener(AL10.AL_POSITION,    listenerPos);
-		AL10.alListener(AL10.AL_VELOCITY,    listenerVel);
-		AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
+		AL10.alListenerfv(AL10.AL_POSITION,    listenerPos);
+		AL10.alListenerfv(AL10.AL_VELOCITY,    listenerVel);
+		AL10.alListenerfv(AL10.AL_ORIENTATION, listenerOri);
 	}
  
 	/**
