@@ -16,7 +16,10 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
+
+import org.lwjgl.system.MemoryStack;
 
 import avalone.api.util.FPoint;
 import avalone.api.util.Point;
@@ -441,4 +444,24 @@ public abstract class Geometry extends BasicFuncs
         glVertex2i(p2.x, p2.y);
         glEnd();
     }
+    
+    /*public void drawVBOTriangle()
+    {
+    	try (MemoryStack stack = MemoryStack.stackPush()) {
+    	FloatBuffer vertices = stack.mallocFloat(3 * 6);
+    	vertices.put(-0.6f).put(-0.4f).put(0f).put(1f).put(0f).put(0f);
+    	vertices.put(0.6f).put(-0.4f).put(0f).put(0f).put(1f).put(0f);
+    	vertices.put(0f).put(0.6f).put(0f).put(0f).put(0f).put(1f);
+    	vertices.flip();
+    	int vbo = glGenBuffers();
+    	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    	glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+    	}
+    }
+    
+    public void drawVAOTriangle()
+    {
+    	int vao = glGenVertexArrays();
+    	glBindVertexArray(vao);
+    }*/
 }
