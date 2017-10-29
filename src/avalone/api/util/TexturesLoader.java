@@ -104,36 +104,7 @@ public class TexturesLoader
     	{
     		File f = new File(absolutePath);
     		BufferedImage img = ImageIO.read(f);
-    		/*BufferedImage img = ImageIO.read(TexturesLoader.class.getClassLoader().getResource("/textures" + File.separator + path)); 
-    		System.out.println(img.toString());*/
     		return img;
-    		 /*When running code using java -jar app.jar, java uses ONLY the class path defined in the manifest of the JAR file (i.e. Class-Path attribute). If the class is in app.jar, or the class is in the class path set in the Class-Path attribute of the JAR's manifest, you can load that class using the following code snippet, where the className is the fully-qualified class name.
-
-    		 final String classAsPath = className.replace('.', '/') + ".class";
-    		 final InputStream input = ClassLoader.getSystemResourceAsStream( path/to/class );
-
-    		 Now if the class is not part of the JAR, and it isn't in the manifest's Class-Path, then the class loader won't find it. Instead, you can use the URLClassLoader, with some care to deal with differences between windows and Unix/Linux/MacOSX.
-
-    		 // the class to load
-    		 final String classAsPath = className.replace('.', '/') + ".class";
-
-    		 // the URL to the `app.jar` file (Windows and Unix/Linux/MacOSX below)
-    		 final URL url = new URL( "file", null, "///C:/Users/diffusive/app.jar" );
-    		 //final URL url = new URL( "file", null, "/Users/diffusive/app.jar" );
-
-    		 // create the class loader with the JAR file
-    		 final URLClassLoader urlClassLoader = new URLClassLoader( new URL[] { url } );
-
-    		 // grab the resource, through, this time from the `URLClassLoader` object
-    		 // rather than from the `ClassLoader` class
-    		 final InputStream input = urlClassLoader.getResourceAsStream( classAsPath );
-
-    		 In both examples you'll need to deal with the exceptions, and the fact that the input stream is null if the resource can't be found. Also, if you need to get the InputStream into a byte[], you can use Apache's commons IOUtils.toByteArray(...). And, if you then want a Class, you can use the class loader's defineClass(...) method, which accepts the byte[].
-
-    		 You can find this code in a ClassLoaderUtils class in the Diffusive source code, which you can find on SourceForge at github.com/robphilipp/diffusive
-
-    		 And a method to create URL for Windows and Unix/Linux/MacOSX from relative and absolute paths in RestfulDiffuserManagerResource.createJarClassPath(...)*/
-
     	}
     	catch(IOException e)
     	{

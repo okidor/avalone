@@ -11,14 +11,17 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import avalone.api.util.Point;
 import avalone.api.util.TexturesLoader;
 
 public class AvaloneGLAPI extends Geometry
 {
+	private static AvaloneGLAPI instance;
 	protected Point modif;
 	protected Point scale;
+	protected String subFolder;
 	protected int[] texturesID;
 	protected String[] texturesName;
 	protected BufferedImage[] bufImg;
@@ -35,16 +38,23 @@ public class AvaloneGLAPI extends Geometry
 		super(width,height,title);
     	modif = new Point();
     	scale = new Point(1,1);
-        initTextures(subFolder);
+    	this.subFolder = subFolder;
+        initTextures();
         lastFPS = GLFW.glfwGetTime();
+        instance = this;
     }
+	
+	public static AvaloneGLAPI getInstance()
+	{
+		return instance;
+	}
 	
 	public void enableTextures()
     {
     	glEnable(GL_TEXTURE_2D);
     }
 	
-	private void initTextures(String subFolder)
+	private void initTextures()
     {
 		hm = new HashMap<String,Integer>();
     	hmb = new HashMap<String,BufferedImage>();
@@ -57,6 +67,21 @@ public class AvaloneGLAPI extends Geometry
     	
     	unbindTexture();
     }
+	
+	public void loadTmpTextures(String subSubFolder)
+	{
+		initTexturesInFolder(subFolder + File.separator + subSubFolder);
+	}
+	
+	public void unloadTmpTextures(String subSubFolder)
+	{
+		File dir = new File("textures" + File.separator + subFolder + File.separator + subSubFolder);
+    	File[] files = dir.listFiles();
+    	if(files != null)
+    	{
+    		unloadFolderTextures(files);
+    	}
+	}
 	
 	private void initTexturesInFolder(String subFolder)
 	{
@@ -81,6 +106,29 @@ public class AvaloneGLAPI extends Geometry
     			System.out.println("id attributed: " + textureID);
     			hm.put(textureName,textureID);
     			hmb.put(textureName, bufImg);
+    		}
+    	}
+    }
+    
+    private void unloadFolderTextures(File[] files)
+    {
+    	for(int i = 0; i < files.length;i++)
+    	{
+    		String textureName = files[i].getName();
+    		if(textureName.endsWith(".jpg") || textureName.endsWith(".png"))
+    		{
+    			Integer j = hm.get(textureName);
+    			if(j != null)
+    	    	{
+    				System.out.println("unloaded texture " + textureName);
+    				hm.remove(textureName);
+        			hmb.remove(textureName);
+    				GL11.glDeleteTextures(j);
+    	    	}
+    			else
+    			{
+    				System.out.println("could not unload texture " + textureName);
+    			}
     		}
     	}
     }
