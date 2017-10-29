@@ -28,7 +28,7 @@ public class GameFile
 	
 	public void read()
 	{
-		File f = checkExists(path,"file");
+		File f = createIfNotExists(path);
         if(f.getName().equals("error"))
         {
         	System.out.println("error on reading file");
@@ -59,17 +59,11 @@ public class GameFile
 	}
 	
 	public void write()
-	{
-		File f = checkExists(path,"file");
-        if(f.getName().equals("error"))
-        {
-        	System.out.println("error on reading file");
-        }
-        
+	{        
         BufferedWriter out;
 		try 
 		{
-			out = new BufferedWriter(new FileWriter(f));
+			out = new BufferedWriter(new FileWriter(new File(path)));
 			for(int i = 0;i < al.size();i++)
 			{
 				String s[] =  al.get(i);
@@ -110,7 +104,24 @@ public class GameFile
 		return readLine;
 	}
 	
-	public static File createFile(String path)
+	public File createIfNotExists(String path)
+	{
+		File f = new File(path);
+    	if(!f.exists())
+    	{
+    		try 
+    		{
+				f.createNewFile();
+			}
+    		catch (IOException e) 
+    		{
+				e.printStackTrace();
+			}
+    	}
+    	return f;
+	}
+	
+	/*public static File createFile(String path)
     {
     	File f = new File(path);
         boolean exists = f.exists();
@@ -129,16 +140,22 @@ public class GameFile
         return f;
     }
 	
-	public File checkExists(String path,String filetype)
+	/*public File checkExists(String path,String filetype)
     {
     	File f = new File(path);
     	if(!f.exists())
     	{
-    		System.out.println(filetype + " " + path + " does not exist.");
-    		return new File("error");
+    		try 
+    		{
+				f.createNewFile();
+			}
+    		catch (IOException e) 
+    		{
+				e.printStackTrace();
+			}
     	}
     	return f;
-    }
+    }*/
 	
 	public String randomNameNewFileGenerator() throws IOException
     {

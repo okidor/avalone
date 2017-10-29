@@ -1,6 +1,5 @@
 package avalone.graphFighters;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;

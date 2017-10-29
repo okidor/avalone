@@ -13,7 +13,6 @@ public class ScrollTextField extends DoubleComponent
 {
 	private ScrollBar sc;
 	private TextField tf;
-	private Label error;
 	
 	public ScrollTextField(int minVal,int maxVal)
 	{
