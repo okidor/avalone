@@ -19,6 +19,7 @@ public abstract class Fighter
 		body = new FighterPart(this,-5,-20,10,20,"blue");
 		leftArm = new FighterPart(this,-10,-20,5,20,"yellow");
 		rightArm = new FighterPart(this,5,-20,5,20,"green");
+		rightArm.rotation = 45;
 		leftLeg = new FighterPart(this,-10,-40,7,20,"brown");
 		rightLeg = new FighterPart(this,3,-40,7,20,"cyan");
 	}

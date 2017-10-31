@@ -9,6 +9,7 @@ public class FighterPart
 	private Point localPosRightUp;
 	private Fighter fighter;
 	public String color;
+	public int rotation;
 	
 	public FighterPart(Fighter fighter,int offsetX,int offsetY,int sizeX,int sizeY,String color)
 	{
@@ -16,11 +17,18 @@ public class FighterPart
 		localPosLeftDown = new Point(offsetX,offsetY);
 		localPosRightUp = new Point(offsetX + sizeX,offsetY + sizeY);
 		this.color = color;
+		rotation = 0;
 	}
 	
 	public void draw()
 	{
+		AvaloneGLAPI.getInstance().beginRotate(new Point(
+				(localPosLeftDown.x + localPosRightUp.x)/2,
+				(localPosLeftDown.y + localPosRightUp.y)/2),
+				rotation);
+		
 		AvaloneGLAPI.getInstance().drawRect(Point.add(fighter.pos, localPosLeftDown), Point.add(fighter.pos, localPosRightUp), color);
+		AvaloneGLAPI.getInstance().endRotate();
 	}
 	
 	public void move(int x,int y)
