@@ -30,6 +30,7 @@ public abstract class Fighter
 		body.draw();
 		leftArm.draw();
 		rightArm.draw();
+		rightArm.rotation += 1;
 		leftLeg.draw();
 		rightLeg.draw();
 	}
