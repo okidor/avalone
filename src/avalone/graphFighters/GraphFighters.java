@@ -16,7 +16,8 @@ public class GraphFighters
 	{
 		arena = null;
 		fighters = new HashMap<String,Fighter>();
-		glapi = new AvaloneGLAPI(1600,1000,"Graph Fighters","graph_fighters");
+		glapi = new AvaloneGLAPI(800,600,"Graph Fighters","graph_fighters");
+		//glapi = new AvaloneGLAPI(1600,1000,"Graph Fighters","graph_fighters");
 		glapi.enableTextures();
 		
 		loadArena("arena1");

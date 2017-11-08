@@ -9,19 +9,23 @@ import avalone.api.util.Point;
 
 enum Joints
 {
-	Center,
-	Up,
-	Down,
-	Left,
-	Right,
-	UpLeft,
-	UpRight,
-	DownLeft,
-	DownRight,
-	ShoulderLeft,
-	ShoulderRight,
-	LegLeft,
-	LegRight
+	center,
+	up,
+	down,
+	left,
+	right,
+	upLeft,
+	upRight,
+	downLeft,
+	downRight,
+	shoulderLeft,
+	shoulderRight,
+	legLeft,
+	legRight,
+	middleUp,
+	middleDown,
+	middleLeft,
+	middleRight
 }
 
 public class FighterPart 
@@ -30,7 +34,9 @@ public class FighterPart
 	
 	private Point localPosLeftDown;
 	private Point localPosRightUp;
+	private Point localCenter;
 	private Fighter fighter;
+	private FighterPart parent;
 	public String color;
 	public int rotation;
 	
@@ -43,10 +49,31 @@ public class FighterPart
 		this.fighter = fighter;
 		localPosLeftDown = new Point(offsetX,offsetY);
 		localPosRightUp = new Point(offsetX + sizeX,offsetY + sizeY);
+		localCenter = new Point(
+				((2 * fighter.pos.x) + localPosLeftDown.x + localPosRightUp.x)/2,
+				((2 * fighter.pos.y) + localPosLeftDown.y + localPosRightUp.y)/2);
 		this.color = color;
 		
 		rotation = 0;
 		joints = new ArrayList<FPoint>();
+	}
+	
+	public FighterPart(FighterPart parent, String Color, FPoint origin, int sizeX, int sizeY,
+			ArrayList<FPoint> joints)
+	{
+		presetJointsInitialize();
+		this.fighter = parent.fighter;
+		this.parent = parent;
+		localPosLeftDown = new Point(
+				Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)),
+				Float.floatToIntBits(parent.localCenter.y * (1 + origin.y)));
+		localPosRightUp = new Point(
+				localPosLeftDown.x + sizeX,
+				localPosRightUp.y + sizeY);
+		this.color = color;
+		
+		rotation = 0;
+		this.joints = joints;
 	}
 	
 	public void draw()
@@ -66,6 +93,13 @@ public class FighterPart
 		localPosLeftDown.y = localPosLeftDown.y + y;
 		localPosRightUp.x = localPosRightUp.x + x;
 		localPosRightUp.y = localPosRightUp.y + y;
+	}
+	
+	public FPoint GetPresetJoint(Joints preset)
+	{
+		if (presetJoints.containsKey(preset.toString()))
+				return presetJoints.get(preset.toString());
+		return null;
 	}
 	
 	public void presetJointsInitialize()
