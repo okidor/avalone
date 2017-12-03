@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
-import avalone.api.util.FPoint;
+import avalone.api.util.Vector;
 import avalone.api.util.Point;
 
 enum Joints
@@ -30,7 +30,7 @@ enum Joints
 
 public class FighterPart 
 {
-	private static HashMap<String, FPoint> presetJoints;
+	private static HashMap<String, Vector> presetJoints;
 	
 	private Point localPosLeftDown;
 	private Point localPosRightUp;
@@ -40,7 +40,7 @@ public class FighterPart
 	public String color;
 	public int rotation;
 	
-	private ArrayList<FPoint> joints;
+	private ArrayList<Vector> joints;
 	
 	
 	public FighterPart(Fighter fighter,int offsetX,int offsetY,int sizeX,int sizeY,String color)
@@ -55,11 +55,11 @@ public class FighterPart
 		this.color = color;
 		
 		rotation = 0;
-		joints = new ArrayList<FPoint>();
+		joints = new ArrayList<Vector>();
 	}
 	
-	public FighterPart(FighterPart parent, String Color, FPoint origin, int sizeX, int sizeY,
-			ArrayList<FPoint> joints)
+	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY,
+			ArrayList<Vector> joints)
 	{
 		presetJointsInitialize();
 		this.fighter = parent.fighter;
@@ -95,7 +95,7 @@ public class FighterPart
 		localPosRightUp.y = localPosRightUp.y + y;
 	}
 	
-	public FPoint GetPresetJoint(Joints preset)
+	public Vector GetPresetJoint(Joints preset)
 	{
 		if (presetJoints.containsKey(preset.toString()))
 				return presetJoints.get(preset.toString());
@@ -106,27 +106,27 @@ public class FighterPart
 	{
 		if (presetJoints == null)
 		{
-			presetJoints = new HashMap<String, FPoint>();
-			presetJoints.put("center", new FPoint(0, 0));
+			presetJoints = new HashMap<String, Vector>();
+			presetJoints.put("center", new Vector(0, 0));
 			
-			presetJoints.put("up", new FPoint(0, 1));
-			presetJoints.put("down", new FPoint(0, -1));
-			presetJoints.put("left", new FPoint(-1, 0));
-			presetJoints.put("right", new FPoint(1, 0));
-			presetJoints.put("upLeft", new FPoint(-1, 1));
-			presetJoints.put("upRight", new FPoint(1, 1));
-			presetJoints.put("downLeft", new FPoint(-1, -1));
-			presetJoints.put("downRight", new FPoint(1, -1));
+			presetJoints.put("up", new Vector(0, 1));
+			presetJoints.put("down", new Vector(0, -1));
+			presetJoints.put("left", new Vector(-1, 0));
+			presetJoints.put("right", new Vector(1, 0));
+			presetJoints.put("upLeft", new Vector(-1, 1));
+			presetJoints.put("upRight", new Vector(1, 1));
+			presetJoints.put("downLeft", new Vector(-1, -1));
+			presetJoints.put("downRight", new Vector(1, -1));
 			
-			presetJoints.put("shoulderLeft", new FPoint(-1, 0.8f));
-			presetJoints.put("shoulderRight", new FPoint(1, 0.8f));
-			presetJoints.put("legLeft", new FPoint(-0.6f, -1));
-			presetJoints.put("legRight", new FPoint(0.6f, -1));
+			presetJoints.put("shoulderLeft", new Vector(-1, 0.8f));
+			presetJoints.put("shoulderRight", new Vector(1, 0.8f));
+			presetJoints.put("legLeft", new Vector(-0.6f, -1));
+			presetJoints.put("legRight", new Vector(0.6f, -1));
 			
-			presetJoints.put("middleUp", new FPoint(0, 0.8f));
-			presetJoints.put("middleDown", new FPoint(1, -0.8f));
-			presetJoints.put("middleLeft", new FPoint(-0.8f, 0));
-			presetJoints.put("middleRight", new FPoint(0.8f, 0));
+			presetJoints.put("middleUp", new Vector(0, 0.8f));
+			presetJoints.put("middleDown", new Vector(1, -0.8f));
+			presetJoints.put("middleLeft", new Vector(-0.8f, 0));
+			presetJoints.put("middleRight", new Vector(0.8f, 0));
 		}
 	}
 }
