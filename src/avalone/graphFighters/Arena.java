@@ -46,4 +46,12 @@ public class Arena
 		}
 		AvaloneGLAPI.getInstance().unbindTexture();
 	}
+	
+	/*public void collideWithObjects(Fighter fighter)
+	{
+		for(int i = 0;i < arenaObjects.size();i++)
+		{
+			fighter.collideWith(arenaObjects.get(i));
+		}
+	}*/
 }

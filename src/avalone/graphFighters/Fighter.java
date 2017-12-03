@@ -1,10 +1,13 @@
 package avalone.graphFighters;
 
 import avalone.api.util.Point;
+import avalone.physics.Falling;
+import avalone.physics.Physics;
 
-public abstract class Fighter 
+public abstract class Fighter implements Falling
 {
 	public Point pos;
+	private int verticalSpeed;
 	protected FighterPart head;
 	protected FighterPart body;
 	protected FighterPart leftArm;
@@ -15,6 +18,7 @@ public abstract class Fighter
 	public Fighter(int x,int y)
 	{
 		pos = new Point(x,y);
+		verticalSpeed = 0;
 		head = new FighterPart(this,-5,0,10,10,"red");
 		body = new FighterPart(this,-5,-20,10,20,"blue");
 		leftArm = new FighterPart(this,-10,-20,5,20,"yellow");
@@ -33,7 +37,44 @@ public abstract class Fighter
 		rightArm.rotation += 1;
 		leftLeg.draw();
 		rightLeg.draw();
+		rightArm.rotation += 1;
 	}
 	
 	public abstract void input();
+	
+	/*public void collideWith(Solid solid)
+	{
+		if(Physics.hasCollided(leftLeg, solid))
+		{
+			verticalSpeed = 0;
+		}
+		if(Physics.hasCollided(rightLeg, solid))
+		{
+			verticalSpeed = 0;
+		}
+	}*/
+	
+	@Override
+	public int getVerticalSpeed() 
+	{
+		return verticalSpeed;
+	}
+
+	@Override
+	public void setVerticalSpeed(int value) 
+	{
+		verticalSpeed = value;
+	}
+
+	@Override
+	public int getVerticalPos() 
+	{
+		return pos.y;
+	}
+
+	@Override
+	public void setVerticalPos(int value) 
+	{
+		pos.y = value;
+	}
 }

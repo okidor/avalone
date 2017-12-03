@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.system.MemoryStack;
 
-import avalone.api.util.FPoint;
+import avalone.api.util.Vector;
 import avalone.api.util.Point;
 import avalone.api.util.StringBuilder;
 
@@ -139,14 +140,14 @@ public abstract class Geometry extends BasicFuncs
     
     /* partially textured */
     
-    public void drawTexturedCoordRect(Point p1,Point p2,FPoint beginIndex,FPoint endIndex,String path)
+    public void drawTexturedCoordRect(Point p1,Point p2,Vector beginIndex,Vector endIndex,String path)
     {
     	int id = getIDFromName(path);
         glBindTexture(GL_TEXTURE_2D, id);
 		drawCoordRect(p1,p2,beginIndex,endIndex);
     }
     
-    public void drawCoordRect(Point p1,Point p2,FPoint beginIndex,FPoint endIndex)
+    public void drawCoordRect(Point p1,Point p2,Vector beginIndex,Vector endIndex)
 	{
 		glBegin(GL_QUADS);
     	glTexCoord2f(beginIndex.x, beginIndex.y);
@@ -319,6 +320,54 @@ public abstract class Geometry extends BasicFuncs
     				drawRawPixel(p1,c);
     			}
     		}
+    	}
+    	glEnd();
+    }
+    
+    public void drawArrow(Point p1,Point p2,String c)
+    {
+    	float colortaker[] = AvColor.getColorByRGB(c);
+    	glColor3f(colortaker[0]/255.0f,colortaker[1]/255.0f,colortaker[2]/255.0f);
+        glBegin(GL_LINES);
+        glVertex2i(p1.x, p1.y);
+        glVertex2i(p2.x, p2.y);
+        //double ThirdOflen = Math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y))/3;
+        Point pt = new Point(p1.x-p2.x,p1.y-p2.y);
+        Point p3 = new Point(92*pt.x/100-38*pt.y/100,38*pt.x/100+92*pt.y/100);
+        p3.x = p3.x + p2.x;p3.y = p3.y + p2.y;
+        p3.x = (p3.x + p2.x * 2)/3;
+        p3.y = (p3.y + p2.y * 2)/3;
+        glVertex2i(p3.x, p3.y);
+        glVertex2i(p2.x, p2.y);
+        Point p4 = new Point(92*pt.x/100+38*pt.y/100,(-38)*pt.x/100+92*pt.y/100);
+        p4.x = p4.x + p2.x;p4.y = p4.y + p2.y;
+        p4.x = (p4.x + p2.x * 2)/3;
+        p4.y = (p4.y + p2.y * 2)/3;
+        glVertex2i(p4.x, p4.y);
+        glVertex2i(p2.x, p2.y);
+        glEnd();
+    }
+    
+    public void drawConvex(ArrayList<Point> points,String c)
+    {
+    	float colortaker[] = AvColor.getColorByRGB(c);
+    	glColor3f(colortaker[0]/255.0f,colortaker[1]/255.0f,colortaker[2]/255.0f);
+    	glBegin(GL_POLYGON);
+    	for(int i = 0; i < points.size();i++)
+    	{
+    		glVertex2i(points.get(i).x, points.get(i).y);
+    	}
+    	glEnd();
+    }
+    
+    public void drawFramedConvex(ArrayList<Point> points,String c)
+    {
+    	float colortaker[] = AvColor.getColorByRGB(c);
+    	glColor3f(colortaker[0]/255.0f,colortaker[1]/255.0f,colortaker[2]/255.0f);
+    	glBegin(GL_LINE_LOOP);
+    	for(int i = 0; i < points.size();i++)
+    	{
+    		glVertex2i(points.get(i).x, points.get(i).y);
     	}
     	glEnd();
     }

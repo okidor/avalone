@@ -78,7 +78,7 @@ public class Player extends AliveEntity
 	public void draw()
 	{
 		Var.rend.draw(pos, pos.clone(tailleX,tailleY), "player" + turned + ".png");
-		//usingItemInHand = inv.draw(pos,turned,usingItemInHand);
+		usingItemInHand = inv.draw(pos,turned,usingItemInHand);
 		//rend.drawText(pos.clone(0,100), pos.clone(132,+132), "123456","white");
 		//Var.rend.drawLife(pos,health,maxHealth);
 		//Var.rend.drawText(pos.clone(-Var.nickname.length()*3,40), pos.clone(Var.nickname.length()*3,56), Var.nickname, "red");

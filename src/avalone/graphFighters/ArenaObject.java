@@ -3,7 +3,7 @@ package avalone.graphFighters;
 import avalone.api.lwjgl3.AvaloneGLAPI;
 import avalone.api.util.Point;
 
-public class ArenaObject 
+public class ArenaObject
 {
 	public Point min;
 	public Point max;

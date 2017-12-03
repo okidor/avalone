@@ -77,8 +77,8 @@ public enum GraphicCharacter
 	
 	/*private float height;
 	private float length;*/
-	private FPoint offset;
-	private FPoint endOffset;
+	private Vector offset;
+	private Vector endOffset;
 	private static final float imgHeight = 52.0000f;
 	private static final float imgWidth = 1007.0000f;
 	public static final int height = 26;
@@ -87,7 +87,7 @@ public enum GraphicCharacter
 	
 	private GraphicCharacter(float pixelOffsetX,float pixelOffsetY)
 	{
-		offset = new FPoint(pixelOffsetX/imgWidth,pixelOffsetY/imgHeight);
+		offset = new Vector(pixelOffsetX/imgWidth,pixelOffsetY/imgHeight);
 		endOffset = offset.clone(width/imgWidth,height/imgHeight);
 	}
 	

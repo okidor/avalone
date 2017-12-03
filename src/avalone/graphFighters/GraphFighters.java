@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
 import avalone.api.util.Point;
+import avalone.physics.Physics;
 
 public class GraphFighters 
 {
@@ -27,8 +28,11 @@ public class GraphFighters
     		arena.drawObjects();
     		for(String key : fighters.keySet())
     		{
-    			fighters.get(key).input();
-    			fighters.get(key).draw();
+    			Fighter fighter = fighters.get(key);
+    			Physics.applyGrav(fighter);
+    			//arena.collideWithObjects(fighter);
+    			fighter.input();
+    			fighter.draw();
     		}
     		
     		glapi.drawFPS(new Point(5,960),new Point(40,995));
@@ -44,7 +48,7 @@ public class GraphFighters
 			glapi.unloadTmpTextures(arena.name);
 		}
 		arena = new Arena(newEnvName);
-		fighters.put("unnamed",new Player(100,200));
+		fighters.put("unnamed",new Player(50,200));
 		glapi.loadTmpTextures(newEnvName);
 	}
 	

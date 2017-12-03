@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
-import avalone.api.util.FPoint;
+import avalone.api.util.Vector;
 import avalone.api.util.Point;
 import avalone.negend.global.Const;
 import avalone.negend.global.Var;
@@ -146,12 +146,12 @@ public class Renderer
 			if(textureOffset > size[0] - size[1])
 			{
 				int midX = p1.x + (size[0] - textureOffset);
-				glapi.drawTexturedCoordRect(p1,new Point(midX,p2.y),new FPoint(textureOffset/(float)size[0],0.0f),new FPoint(1.0f,liquidHeight),tile.getTexture());
-				glapi.drawTexturedCoordRect(new Point(midX,p1.y),p2,new FPoint(0.0f,0.0f),new FPoint((size[1] - (size[0] - textureOffset))/(float)size[0],liquidHeight),tile.getTexture());
+				glapi.drawTexturedCoordRect(p1,new Point(midX,p2.y),new Vector(textureOffset/(float)size[0],0.0f),new Vector(1.0f,liquidHeight),tile.getTexture());
+				glapi.drawTexturedCoordRect(new Point(midX,p1.y),p2,new Vector(0.0f,0.0f),new Vector((size[1] - (size[0] - textureOffset))/(float)size[0],liquidHeight),tile.getTexture());
 			}
 			else
 			{
-				glapi.drawTexturedCoordRect(p1,p2,new FPoint((float)textureOffset/size[0],0.0f),new FPoint(rapport + (float)textureOffset/size[0],liquidHeight),tile.getTexture());
+				glapi.drawTexturedCoordRect(p1,p2,new Vector((float)textureOffset/size[0],0.0f),new Vector(rapport + (float)textureOffset/size[0],liquidHeight),tile.getTexture());
 			}
 			if(textureOffset >= size[0])
 			{
@@ -160,7 +160,7 @@ public class Renderer
 		}
 		else
 		{
-			glapi.drawTexturedCoordRect(p1,p2,new FPoint(0.0f,0.0f),new FPoint(1.0f,liquidHeight),tile.getTexture());
+			glapi.drawTexturedCoordRect(p1,p2,new Vector(0.0f,0.0f),new Vector(1.0f,liquidHeight),tile.getTexture());
 		}
 	}
 	

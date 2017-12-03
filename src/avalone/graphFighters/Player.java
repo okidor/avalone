@@ -16,17 +16,14 @@ public class Player extends Fighter
 		if(latestKey == 'q' || latestKey == '\u2190')
 		{
 			pos.x = pos.x - 5;
-			System.out.println("test");
 		}
 		if(latestKey == 'd' || latestKey == '\u2192')
 		{
 			pos.x = pos.x + 5;
-			System.out.println("test2");
 		}
 		if(latestKey == ' ')
 		{
 			//jump();
 		}
 	}
-
 }
