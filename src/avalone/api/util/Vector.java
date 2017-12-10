@@ -107,9 +107,9 @@ public class Vector
     
     public void sub(Vector p)
     {
-    	System.out.println(x + "," + p.x);
+    	//System.out.println(x + "," + p.x);
     	x = x - p.x;
-    	System.out.println(x);
+    	//System.out.println(x);
     	y = y - p.y;
     	z = z - p.z;
     }

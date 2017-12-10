@@ -19,18 +19,32 @@ public class CollisionTest
 		objs = new ArrayList<Solid>();
 		colors = new ArrayList<String>();
 		Solid solid1 = new Solid(new Point(10,10),new Point(10,20),new Point(20,20),new Point(20,10));
-   	 	Solid solid2 = new Solid(new Point(350,450),new Point(255,519),new Point(291,631),new Point(409,631),new Point(445,519));
+   	 	Solid solid2 = new Solid(100,new Point(350,450),new Point(255,519),new Point(291,631),new Point(409,631),new Point(445,519));
    	 	Solid borderB = new Solid(999999999,new Point(0,0),new Point(0,5),new Point(900,5),new Point(900,0));
 	 	Solid borderG = new Solid(999999999,new Point(0,6),new Point(0,894),new Point(5,894),new Point(5,6));
 	 	Solid borderD = new Solid(999999999,new Point(895,6),new Point(895,894),new Point(900,894),new Point(900,6));
    	 	Solid borderH = new Solid(999999999,new Point(0,895),new Point(0,900),new Point(900,900),new Point(900,895));
+   	 	
    	 	objs.add(solid1);objs.add(solid2);objs.add(borderB);objs.add(borderG);objs.add(borderD);objs.add(borderH);
    	 	colors.add("red");colors.add("blue");colors.add("yellow");colors.add("yellow");colors.add("yellow");colors.add("yellow");
+   	 	for(int i = 0;i < 10;i++)
+		{
+	 		for(int j = 0;j < 10;j++)
+	 		{
+	 			objs.add(new Solid(new Point(100 + i * 20,100 + j * 20),new Point(100 + i * 20,110 + j * 20),new Point(110 + i * 20,110 + j * 20),new Point(110 + i * 20,100 + j * 20)));
+	 			colors.add("green");
+	 		}
+	 	}
    	 	rand = new Random();
    	 	solid1.linearVelocity.x = rand.nextInt(20) - 10;
    	 	solid1.linearVelocity.y = rand.nextInt(20) - 10;
    	 	solid2.linearVelocity.x = rand.nextInt(10);
 	 	solid2.linearVelocity.y = rand.nextInt(10);
+	 	for(int i = 0;i < 100;i++)
+		{
+	 		objs.get(6+i).linearVelocity.x = rand.nextInt(20) - 10;
+	 		objs.get(6+i).linearVelocity.y = rand.nextInt(20) - 10;
+		}
 		loop(solid1,solid2);
 	 }
 
@@ -53,6 +67,10 @@ public class CollisionTest
 	    	 //solid2.setAllPoints(mouse);
 	    	 solid1.update();
 	    	 solid2.update();
+	    	 for(int i = 0;i < 100;i++)
+	 		{
+	 	 		objs.get(6+i).update();
+	 		}
 	    	 Physics.resolveAllCollisions(objs);
 	    	 if(!Physics.debug)
 	    	 {

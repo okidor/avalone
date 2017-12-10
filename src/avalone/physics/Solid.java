@@ -128,7 +128,7 @@ public class Solid
 		return axes;
 	}
 	
-	public void debugGetNormals()
+	/*public void debugGetNormals()
 	{
 		// loop over the vertices
 		for (int i = 0; i < vertices.size(); i++) 
@@ -145,7 +145,7 @@ public class Solid
 			Point means = new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
 			AvaloneGLAPI.getInstance().drawArrow(means,Point.sub(means, normal), "brown");
 		}
-	}
+	}*/
 	
 	public Vector project(Point axis)
 	{
