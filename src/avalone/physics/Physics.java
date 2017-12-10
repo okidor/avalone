@@ -20,7 +20,7 @@ public class Physics
 		falling.setVerticalSpeed(falling.getVerticalSpeed() + gravity);
 	}
 	
-	public static boolean hasCollidedDebug(Solid solid1,Solid solid2)
+	/*public static boolean hasCollidedDebug(Solid solid1,Solid solid2)
 	{
 		float overlap = 1000000000f;
 		Point smallestAxis = null;
@@ -93,7 +93,7 @@ public class Physics
 		AvaloneGLAPI.getInstance().drawCircle(means, 10, "green");
 		debug = true;
 		return true;
-	}
+	}*/
 	
 	public static boolean hasCollided(Solid solid1,Solid solid2)
 	{
@@ -183,49 +183,49 @@ public class Physics
 	{
 		if(hasCollided(solid1,solid2))
 		{
-			System.out.println("current: " + currentCollisionNormal.x + "," + currentCollisionNormal.y + "," + currentOverlap);
+			//System.out.println("current: " + currentCollisionNormal.x + "," + currentCollisionNormal.y + "," + currentOverlap);
 			// Calculate relative velocity
 			Vector rv = Vector.sub(solid2.linearVelocity, solid1.linearVelocity);
-			System.out.println("rv: " + rv.x + "," + rv.y);
+			//System.out.println("rv: " + rv.x + "," + rv.y);
 			
 			// Calculate relative velocity in terms of the normal direction
 			Vector fCollisionNormal = new Vector(currentCollisionNormal);
 			fCollisionNormal.normalize();
-			System.out.println("fcurrent: " + fCollisionNormal.x + "," + fCollisionNormal.y);
+			//System.out.println("fcurrent: " + fCollisionNormal.x + "," + fCollisionNormal.y);
 			float velAlongNormal = Vector.dotProduct( rv, fCollisionNormal);
-			System.out.println("velAlongNormal: " + velAlongNormal);
+			//System.out.println("velAlongNormal: " + velAlongNormal);
 			 
 			// Do not resolve if velocities are separating
-			if(velAlongNormal > 0)
-				return;
+			/*if(velAlongNormal > 0)
+				return;*/
 			 
 			// Calculate restitution
 			float e = Math.min( solid1.restitution, solid2.restitution);
-			System.out.println("restitution: " + e);
+			//System.out.println("restitution: " + e);
 			 
 			// Calculate impulse scalar
 			float j = -(1 + e) * velAlongNormal;
-			System.out.println("j1:" + j);
-			System.out.println("j /= 1 / " + solid1.mass + " + 1 / " + solid2.mass);
+			//System.out.println("j1:" + j);
+			//System.out.println("j /= 1 / " + solid1.mass + " + 1 / " + solid2.mass);
 			j /= 1 / solid1.mass + 1 / solid2.mass;
-			System.out.println("j2:" + j);
+			//System.out.println("j2:" + j);
 			// Apply impulse
-			System.out.println("normal:" + fCollisionNormal.x + "," + fCollisionNormal.y);
+			//System.out.println("normal:" + fCollisionNormal.x + "," + fCollisionNormal.y);
 			Vector impulse = fCollisionNormal.scale(j);
-			System.out.println("impulse:" + impulse.x + "," + impulse.y);
-			System.out.println(solid1.linearVelocity.x + "," + solid1.linearVelocity.y);
-			System.out.println("scaled impulse:" + impulse.scale(1 / solid1.mass).x + "," + impulse.scale(1 / solid1.mass).y);
+			//System.out.println("impulse:" + impulse.x + "," + impulse.y);
+			//System.out.println(solid1.linearVelocity.x + "," + solid1.linearVelocity.y);
+			//System.out.println("scaled impulse:" + impulse.scale(1 / solid1.mass).x + "," + impulse.scale(1 / solid1.mass).y);
 			solid1.linearVelocity.sub(impulse.scale(1 / solid1.mass));
-			System.out.println(solid1.linearVelocity.x + "," + solid1.linearVelocity.y);
-			System.out.println(solid2.linearVelocity.x + "," + solid2.linearVelocity.y);
-			System.out.println("scaled impulse:" + impulse.scale(1 / solid2.mass).x + "," + impulse.scale(1 / solid2.mass).y);
+			//System.out.println(solid1.linearVelocity.x + "," + solid1.linearVelocity.y);
+			//System.out.println(solid2.linearVelocity.x + "," + solid2.linearVelocity.y);
+			//System.out.println("scaled impulse:" + impulse.scale(1 / solid2.mass).x + "," + impulse.scale(1 / solid2.mass).y);
 			solid2.linearVelocity.add(impulse.scale(1 / solid2.mass));
-			System.out.println(solid2.linearVelocity.x + "," + solid2.linearVelocity.y);
+			//System.out.println(solid2.linearVelocity.x + "," + solid2.linearVelocity.y);
 			
 			currentCollisionNormal = null;
 			currentOverlap = 0;
 			//AvaloneGLAPI.getInstance().mustsleep(10000);
-			System.out.println("==================================================================");
+			//System.out.println("==================================================================");
 		}
 	}
 	

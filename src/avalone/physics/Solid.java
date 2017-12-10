@@ -41,7 +41,7 @@ public class Solid
 		angularVelocity = new Vector(0,0);
 		acceleration = new Vector(0,0);
 		torque = 0;
-		restitution = 0.75f;
+		restitution = 1;
 	}
 	
 	public Vector getCenterOfMass()
