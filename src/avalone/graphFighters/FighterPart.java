@@ -48,7 +48,7 @@ public class FighterPart
 		presetJointsInitialize();
 		this.fighter = fighter;
 		localPosLeftDown = new Point(offsetX,offsetY);
-		localPosRightUp = new Point(offsetX + sizeX,offsetY + sizeY);
+		localPosRightUp = new Point(offsetX + sizeX, offsetY + sizeY);
 		localCenter = new Point(
 				((2 * fighter.pos.x) + localPosLeftDown.x + localPosRightUp.x)/2,
 				((2 * fighter.pos.y) + localPosLeftDown.y + localPosRightUp.y)/2);
@@ -58,6 +58,10 @@ public class FighterPart
 		joints = new ArrayList<Vector>();
 	}
 	
+	
+	//parent : FighterPart sur laquelle est attaché celle-ci.
+	//origin : Joint (FPoint) du parent sur lequel est attaché ce FighterPart.
+	//joints : ArrayList des joints dont dispose ce FighterPart.
 	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY,
 			ArrayList<Vector> joints)
 	{
@@ -69,7 +73,7 @@ public class FighterPart
 				Float.floatToIntBits(parent.localCenter.y * (1 + origin.y)));
 		localPosRightUp = new Point(
 				localPosLeftDown.x + sizeX,
-				localPosRightUp.y + sizeY);
+				localPosLeftDown.y + sizeY);
 		this.color = color;
 		
 		rotation = 0;
