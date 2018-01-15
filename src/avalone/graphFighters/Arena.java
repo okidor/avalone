@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
+import avalone.api.util.Point;
 
 public class Arena 
 {	
@@ -29,7 +30,10 @@ public class Arena
 			String line;
 			while ((line = br.readLine()) != null) 
 			{
-			    arenaObjects.add(new ArenaObject(line));
+				String[] infos = line.split(":");
+			    arenaObjects.add(new ArenaObject(
+			    		infos[4], new Point(Integer.parseInt(infos[0]),Integer.parseInt(infos[1])), new Point(Integer.parseInt(infos[0]),Integer.parseInt(infos[3]))
+			    				, new Point(Integer.parseInt(infos[2]),Integer.parseInt(infos[3])), new Point(Integer.parseInt(infos[2]),Integer.parseInt(infos[1]))));
 			}
 		} 
 		catch (IOException e) 
@@ -47,11 +51,11 @@ public class Arena
 		AvaloneGLAPI.getInstance().unbindTexture();
 	}
 	
-	/*public void collideWithObjects(Fighter fighter)
+	public void collideWithObjects(Fighter fighter)
 	{
 		for(int i = 0;i < arenaObjects.size();i++)
 		{
 			fighter.collideWith(arenaObjects.get(i));
 		}
-	}*/
+	}
 }

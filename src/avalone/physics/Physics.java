@@ -179,7 +179,7 @@ public class Physics
 		return Math.max(0, Math.min(max1, max2) - Math.max(min1, min2));
 	}
 	
-	public static void resolveCollision(Solid solid1,Solid solid2)
+	public static boolean resolveCollision(Solid solid1,Solid solid2)
 	{
 		if(hasCollided(solid1,solid2))
 		{
@@ -226,7 +226,21 @@ public class Physics
 			currentOverlap = 0;
 			//AvaloneGLAPI.getInstance().mustsleep(10000);
 			//System.out.println("==================================================================");
+			return true;
 		}
+		return false;
+	}
+	
+	public static boolean resolveCollisionGlobalLocal(Solid localSolid,Point globalPos,Solid globalSolid)
+	{
+		int size = localSolid.vertices.size();
+		Point[] globPoints = new Point[size];
+		for(int i = 0;i < size;i++)
+		{
+			globPoints[i] = Point.add(localSolid.vertices.get(i), globalPos);
+		}
+		Solid realSolid = new Solid(globPoints);
+		return resolveCollision(realSolid,globalSolid);
 	}
 	
 	/*public static void resolveCollision(Solid solid1,Solid solid2)
