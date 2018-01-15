@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
 import avalone.api.util.Vector;
+import avalone.physics.Solid;
 import avalone.api.util.Point;
 
 enum Joints
@@ -28,12 +29,12 @@ enum Joints
 	middleRight
 }
 
-public class FighterPart 
+public class FighterPart extends Solid
 {
 	private static HashMap<String, Vector> presetJoints;
 	
-	private Point localPosLeftDown;
-	private Point localPosRightUp;
+	//private Point localPosLeftDown;
+	//private Point localPosRightUp;
 	private Point localCenter;
 	private Fighter fighter;
 	private FighterPart parent;
@@ -42,38 +43,44 @@ public class FighterPart
 	
 	private ArrayList<Vector> joints;
 	
-	
 	public FighterPart(Fighter fighter,int offsetX,int offsetY,int sizeX,int sizeY,String color)
 	{
+		super(1.0f,new Point(offsetX,offsetY),new Point(offsetX,offsetY + sizeY),new Point(offsetX + sizeX,offsetY + sizeY),new Point(offsetX + sizeX,offsetY));
 		presetJointsInitialize();
 		this.fighter = fighter;
-		localPosLeftDown = new Point(offsetX,offsetY);
-		localPosRightUp = new Point(offsetX + sizeX, offsetY + sizeY);
+		//localPosLeftDown = new Point(offsetX,offsetY);
+		//localPosRightUp = new Point(offsetX + sizeX,offsetY + sizeY);
 		localCenter = new Point(
-				((2 * fighter.pos.x) + localPosLeftDown.x + localPosRightUp.x)/2,
-				((2 * fighter.pos.y) + localPosLeftDown.y + localPosRightUp.y)/2);
+				fighter.pos.x + (vertices.get(0).x + vertices.get(2).x)/2,
+				fighter.pos.y + (vertices.get(0).y + vertices.get(2).y)/2);
 		this.color = color;
 		
 		rotation = 0;
 		joints = new ArrayList<Vector>();
 	}
 	
-	
 	//parent : FighterPart sur laquelle est attaché celle-ci.
 	//origin : Joint (FPoint) du parent sur lequel est attaché ce FighterPart.
 	//joints : ArrayList des joints dont dispose ce FighterPart.
-	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY,
+	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY, String color,
 			ArrayList<Vector> joints)
 	{
+		super(1.0f,new Point(Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)),Float.floatToIntBits(parent.localCenter.y * (1 + origin.y))),
+				   new Point(Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)),Float.floatToIntBits(parent.localCenter.y * (1 + origin.y)) + sizeY),
+				   new Point(Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)) + sizeX,Float.floatToIntBits(parent.localCenter.y * (1 + origin.y)) + sizeY),
+				   new Point(Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)) + sizeX,Float.floatToIntBits(parent.localCenter.y * (1 + origin.y))));
 		presetJointsInitialize();
 		this.fighter = parent.fighter;
 		this.parent = parent;
-		localPosLeftDown = new Point(
+		/*localPosLeftDown = new Point(
 				Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)),
 				Float.floatToIntBits(parent.localCenter.y * (1 + origin.y)));
 		localPosRightUp = new Point(
 				localPosLeftDown.x + sizeX,
-				localPosLeftDown.y + sizeY);
+				localPosLeftDown.y + sizeY);*/
+		localCenter = new Point(
+				fighter.pos.x + (vertices.get(0).x + vertices.get(2).x)/2,
+				fighter.pos.y + (vertices.get(0).y + vertices.get(2).y)/2);
 		this.color = color;
 		
 		rotation = 0;
@@ -82,21 +89,15 @@ public class FighterPart
 	
 	public void draw()
 	{
-		AvaloneGLAPI.getInstance().beginRotate(new Point(
-				((2 * fighter.pos.x) + localPosLeftDown.x + localPosRightUp.x)/2,
-				((2 * fighter.pos.y) + localPosLeftDown.y + localPosRightUp.y)/2),
-				rotation);
+		AvaloneGLAPI.getInstance().beginRotate(localCenter,rotation);
 		
-		AvaloneGLAPI.getInstance().drawRect(Point.add(fighter.pos, localPosLeftDown), Point.add(fighter.pos, localPosRightUp), color);
+		AvaloneGLAPI.getInstance().drawRect(Point.add(fighter.pos, vertices.get(0)), Point.add(fighter.pos, vertices.get(2)), color);
 		AvaloneGLAPI.getInstance().endRotate();
 	}
 	
 	public void move(int x,int y)
 	{
-		localPosLeftDown.x = localPosLeftDown.x + x;
-		localPosLeftDown.y = localPosLeftDown.y + y;
-		localPosRightUp.x = localPosRightUp.x + x;
-		localPosRightUp.y = localPosRightUp.y + y;
+		moveAllPoints(new Point(x,y));
 	}
 	
 	public Vector GetPresetJoint(Joints preset)

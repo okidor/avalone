@@ -95,7 +95,7 @@ public class CollisionTest
 	 {
 		 for(int i = 0;i < objs.size();i++)
 		 {
-			 glapi.drawConvex(objs.get(i).vertices, colors.get(i));
+			 glapi.drawConvex(objs.get(i).getVertices(), colors.get(i));
 		 }
 	 }
 	 
@@ -103,7 +103,7 @@ public class CollisionTest
 	 {
 		 for(int i = 0;i < objs.size();i++)
 		 {
-			 glapi.drawFramedConvex(objs.get(i).vertices, colors.get(i));
+			 glapi.drawFramedConvex(objs.get(i).getVertices(), colors.get(i));
 		 }
 	 }
 

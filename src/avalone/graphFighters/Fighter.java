@@ -3,6 +3,7 @@ package avalone.graphFighters;
 import avalone.api.util.Point;
 import avalone.physics.Falling;
 import avalone.physics.Physics;
+import avalone.physics.Solid;
 
 public abstract class Fighter implements Falling
 {
@@ -23,7 +24,7 @@ public abstract class Fighter implements Falling
 		body = new FighterPart(this,-5,-20,10,20,"blue");
 		leftArm = new FighterPart(this,-10,-20,5,20,"yellow");
 		rightArm = new FighterPart(this,5,-20,5,20,"green");
-		rightArm.rotation = 45;
+		//rightArm.rotation = 45;
 		leftLeg = new FighterPart(this,-10,-40,7,20,"brown");
 		rightLeg = new FighterPart(this,3,-40,7,20,"cyan");
 	}
@@ -34,25 +35,43 @@ public abstract class Fighter implements Falling
 		body.draw();
 		leftArm.draw();
 		rightArm.draw();
-		rightArm.rotation += 1;
+		//rightArm.rotation += 1;
 		leftLeg.draw();
 		rightLeg.draw();
-		rightArm.rotation += 1;
+		//rightArm.rotation += 1;
 	}
 	
 	public abstract void input();
 	
-	/*public void collideWith(Solid solid)
+	public void collideWith(Solid solid)
 	{
-		if(Physics.hasCollided(leftLeg, solid))
+		if(Physics.resolveCollisionGlobalLocal(leftLeg, pos, solid))
 		{
+			System.out.println("collide left leg");
 			verticalSpeed = 0;
 		}
-		if(Physics.hasCollided(rightLeg, solid))
+		if(Physics.resolveCollisionGlobalLocal(rightLeg, pos, solid))
 		{
+			System.out.println("collide right leg");
 			verticalSpeed = 0;
 		}
-	}*/
+		if(Physics.resolveCollisionGlobalLocal(head, pos, solid))
+		{
+			System.out.println("collide head");
+		}
+		if(Physics.resolveCollisionGlobalLocal(body, pos, solid))
+		{
+			System.out.println("collide body");
+		}
+		if(Physics.resolveCollisionGlobalLocal(leftArm, pos, solid))
+		{
+			System.out.println("collide left arm");
+		}
+		if(Physics.resolveCollisionGlobalLocal(rightArm, pos, solid))
+		{
+			System.out.println("collide right arm");
+		}
+	}
 	
 	@Override
 	public int getVerticalSpeed() 

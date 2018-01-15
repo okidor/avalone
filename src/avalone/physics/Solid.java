@@ -10,7 +10,8 @@ public class Solid
 {
 	//public Point posBottomLeft;
 	//public Point posTopRight;
-	public ArrayList<Point> vertices;
+	protected ArrayList<Point> vertices;
+	private ArrayList<Point> oldVertices;
 	public Vector centerOfMass;
 	public int orientation;
 	public float mass;
@@ -30,9 +31,11 @@ public class Solid
 		//this.posBottomLeft = posBottomLeft;
 		//this.posTopRight = posTopRight;
 		vertices = new ArrayList<Point>();
+		oldVertices = new ArrayList<Point>();
 		for(int i = 0;i < points.length;i++)
 		{
 			vertices.add(points[i]);
+			oldVertices.add(points[i]);
 		}
 		this.mass = mass;
 		centerOfMass = getCenterOfMass();
@@ -81,6 +84,7 @@ public class Solid
 	{
 		for(int i = 0;i < vertices.size();i++)
 		{
+			oldVertices.get(i).x = vertices.get(i).x;oldVertices.get(i).y = vertices.get(i).y;
 			vertices.get(i).add(p);
 		}
 		centerOfMass.x = centerOfMass.x + p.x;
@@ -94,8 +98,10 @@ public class Solid
 		{
 			Point relativeToCm = new Point(vertices.get(i).x - Math.round(centerOfMass.x),vertices.get(i).y - Math.round(centerOfMass.y));
 			Point vertice = vertices.get(i);
+			Point oldVertice = vertices.get(i);
 			Point tmp = Point.add(p,relativeToCm);
 			vertice.setCoords(tmp.x, tmp.y);
+			oldVertice.setCoords(tmp.x, tmp.y);
 			//System.out.print("(" + vertice.x + "," + vertice.y + ") ");
 		}
 		//System.out.println();
@@ -103,7 +109,7 @@ public class Solid
 		centerOfMass.y = p.y;
 	}
 	
-	public ArrayList<Point> getVertices()
+	public ArrayList<Point> getVertices()	//TODO get a copy instead
 	{
 		return vertices;
 	}

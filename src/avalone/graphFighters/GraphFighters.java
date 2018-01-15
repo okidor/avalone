@@ -16,7 +16,7 @@ public class GraphFighters
 	{
 		arena = null;
 		fighters = new HashMap<String,Fighter>();
-		glapi = new AvaloneGLAPI(800,600,"Graph Fighters","graph_fighters");
+		glapi = new AvaloneGLAPI(1200,900,"Graph Fighters","graph_fighters");
 		//glapi = new AvaloneGLAPI(1600,1000,"Graph Fighters","graph_fighters");
 		glapi.enableTextures();
 		
@@ -30,7 +30,7 @@ public class GraphFighters
     		{
     			Fighter fighter = fighters.get(key);
     			Physics.applyGrav(fighter);
-    			//arena.collideWithObjects(fighter);
+    			arena.collideWithObjects(fighter);
     			fighter.input();
     			fighter.draw();
     		}
