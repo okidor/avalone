@@ -59,7 +59,10 @@ public class FighterPart extends Solid
 		joints = new ArrayList<Vector>();
 	}
 	
-	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY,String color,
+	//parent : FighterPart sur laquelle est attaché celle-ci.
+	//origin : Joint (FPoint) du parent sur lequel est attaché ce FighterPart.
+	//joints : ArrayList des joints dont dispose ce FighterPart.
+	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY, String color,
 			ArrayList<Vector> joints)
 	{
 		super(1.0f,new Point(Float.floatToIntBits(parent.localCenter.x * (1 + origin.x)),Float.floatToIntBits(parent.localCenter.y * (1 + origin.y))),

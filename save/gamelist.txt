@@ -1,0 +1,6 @@
+new game 0 
+new game 1 
+new game 2 
+new game 3 
+new game 4 
+new game 5 
