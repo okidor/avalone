@@ -47,29 +47,29 @@ public abstract class Fighter implements Falling
 	{
 		if(Physics.resolveCollisionGlobalLocal(leftLeg, pos, solid))
 		{
-			System.out.println("collide left leg");
+			//System.out.println("collide left leg");
 			verticalSpeed = 0;
 		}
 		if(Physics.resolveCollisionGlobalLocal(rightLeg, pos, solid))
 		{
-			System.out.println("collide right leg");
+			//System.out.println("collide right leg");
 			verticalSpeed = 0;
 		}
 		if(Physics.resolveCollisionGlobalLocal(head, pos, solid))
 		{
-			System.out.println("collide head");
+			//System.out.println("collide head");
 		}
 		if(Physics.resolveCollisionGlobalLocal(body, pos, solid))
 		{
-			System.out.println("collide body");
+			//System.out.println("collide body");
 		}
 		if(Physics.resolveCollisionGlobalLocal(leftArm, pos, solid))
 		{
-			System.out.println("collide left arm");
+			//System.out.println("collide left arm");
 		}
 		if(Physics.resolveCollisionGlobalLocal(rightArm, pos, solid))
 		{
-			System.out.println("collide right arm");
+			//System.out.println("collide right arm");
 		}
 	}
 	

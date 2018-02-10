@@ -234,48 +234,17 @@ public class Physics
 	public static boolean resolveCollisionGlobalLocal(Solid localSolid,Point globalPos,Solid globalSolid)
 	{
 		int size = localSolid.vertices.size();
-		Point[] globPoints = new Point[size];
 		for(int i = 0;i < size;i++)
 		{
-			globPoints[i] = Point.add(localSolid.vertices.get(i), globalPos);
+			localSolid.vertices.get(i).add(globalPos);
 		}
-		Solid realSolid = new Solid(globPoints);
-		return resolveCollision(realSolid,globalSolid);
-	}
-	
-	/*public static void resolveCollision(Solid solid1,Solid solid2)
-	{
-		if(hasCollided(solid1,solid2))
+		boolean hasCollided = resolveCollision(localSolid,globalSolid);
+		for(int i = 0;i < size;i++)
 		{
-			System.out.println("current: " + currentCollisionNormal.x + "," + currentCollisionNormal.y + "," + currentOverlap);
-			//solid1.moveAllPoints(new Point(-currentCollisionNormal.x,currentCollisionNormal.y));
-			Vector fCollisionNormal = new Vector(currentCollisionNormal);
-			fCollisionNormal.normalize();
-			if (solid1.linearVelocity.x > 0)
-			{
-				fCollisionNormal.x *= -currentOverlap;
-			}
-			else
-			{
-				fCollisionNormal.x *= currentOverlap;
-			}
-			if (solid1.linearVelocity.y > 0)
-			{
-				fCollisionNormal.y *= currentOverlap;
-			}
-			else
-			{
-				fCollisionNormal.y *= -currentOverlap;
-			}
-			System.out.println("fCollisionNormal: " + fCollisionNormal.x + "," + fCollisionNormal.y);
-			System.out.println("linearVelocity: " + solid1.linearVelocity.x + "," + solid1.linearVelocity.y);
-			solid1.moveAllPoints(Vector.floor(fCollisionNormal));
-			solid1.linearVelocity.x = 0;
-			solid1.linearVelocity.y = 0;
-			solid2.linearVelocity.x = 0;
-			solid2.linearVelocity.y = 0;
+			localSolid.vertices.get(i).sub(globalPos);
 		}
-	}*/
+		return hasCollided;
+	}
 	
 	public static void resolveAllCollisions(ArrayList<Solid> solids)
 	{
@@ -291,5 +260,39 @@ public class Physics
 				}
 			}
 		}
+	}
+	
+	public static boolean resolveInterpolatedCollision(Solid solid1,Solid solid2)
+	{
+		ArrayList<Point> s1Vertices = solid1.getVertices();
+		ArrayList<Point> s1OldVertices = solid1.getOldVertices();
+		ArrayList<Point> s2Vertices = solid2.getVertices();
+		ArrayList<Point> s2OldVertices = solid2.getOldVertices();
+		for(float fx1 = 0;fx1 <= 1.0f;fx1 = fx1 + 0.1f)	//TODO scale with speed
+		{
+			for(float fy1 = 0;fy1 <= 1.0f;fy1 = fy1 + 0.1f)	//TODO scale with speed
+			{
+				for(float fx2 = 0;fx2 <= 1.0f;fx2 = fx2 + 0.1f)	//TODO scale with speed
+				{
+					for(float fy2 = 0;fy2 <= 1.0f;fy2 = fy2 + 0.1f)	//TODO scale with speed
+					{
+						Solid fakeSolid1 = solid1.interpSolid(fx1,fy1);
+						Solid fakeSolid2 = solid2.interpSolid(fx2,fy2);
+						boolean collided = resolveCollision(fakeSolid1,fakeSolid2);
+						if(collided)
+						{
+							//TODO register floats
+						}
+					}
+				}
+			}
+		}
+		//TODO use all registered floats
+		return false;
+	}
+	
+	public static int lerp(int x,int y,float a)
+	{
+		return (int) (x + a * (y - x));
 	}
 }
