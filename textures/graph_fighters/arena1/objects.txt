@@ -1,3 +1,7 @@
 10:10:60:60:test.png
 130:120:180:170:test.png
 1000:800:1050:850:test.png
+0:0:1200:1:default.png
+0:899:1200:900:default.png
+0:0:1:900:default.png
+1199:0:1200:900:default.png

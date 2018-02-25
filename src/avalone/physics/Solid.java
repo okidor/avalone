@@ -13,6 +13,7 @@ public class Solid
 	protected ArrayList<Point> vertices;
 	private ArrayList<Point> oldVertices;
 	public Vector centerOfMass;
+	public Vector oldCenterOfMass;
 	public int orientation;
 	public float mass;
 	public Vector linearVelocity;
@@ -39,6 +40,7 @@ public class Solid
 		}
 		this.mass = mass;
 		centerOfMass = getCenterOfMass();
+		oldCenterOfMass = centerOfMass.clone(0);
 		orientation = 0;
 		linearVelocity = new Vector(0,0);
 		angularVelocity = new Vector(0,0);
@@ -87,6 +89,8 @@ public class Solid
 			oldVertices.get(i).x = vertices.get(i).x;oldVertices.get(i).y = vertices.get(i).y;
 			vertices.get(i).add(p);
 		}
+		oldCenterOfMass.x = centerOfMass.x;
+		oldCenterOfMass.y = centerOfMass.y;
 		centerOfMass.x = centerOfMass.x + p.x;
 		centerOfMass.y = centerOfMass.y + p.y;
 	}
@@ -105,16 +109,57 @@ public class Solid
 			//System.out.print("(" + vertice.x + "," + vertice.y + ") ");
 		}
 		//System.out.println();
+		oldCenterOfMass.x = centerOfMass.x;
+		oldCenterOfMass.y = centerOfMass.y;
 		centerOfMass.x = p.x;
 		centerOfMass.y = p.y;
 	}
 	
-	public ArrayList<Point> getVertices()	//TODO get a copy instead
+	public Solid interpSolid(float fx,float fy)
 	{
-		return vertices;
+		ArrayList<Point> interpolatedVertices = new ArrayList<Point>();
+		for(int i = 0;i < vertices.size();i++)
+		{
+			interpolatedVertices.add(new Point(lerp(vertices.get(i).x,oldVertices.get(i).x,fx),lerp(vertices.get(i).y,oldVertices.get(i).y,fy)));
+		}
+		Solid inter = new Solid(mass,(Point[]) interpolatedVertices.toArray());
+		inter.orientation = orientation;
+		inter.linearVelocity = linearVelocity;
+		inter.angularVelocity = angularVelocity;
+		inter.acceleration = acceleration;
+		inter.torque = torque;
+		return inter;
+	}
+	
+	public ArrayList<Point> getVertices()
+	{
+		ArrayList<Point> clonedList = new ArrayList<Point>(vertices.size());
+	    for (Point point : vertices) {
+	        clonedList.add(point.clone(0));
+	    }
+	    return clonedList;
+	}
+	
+	public ArrayList<Point> getOldVertices()
+	{
+		ArrayList<Point> clonedList = new ArrayList<Point>(oldVertices.size());
+	    for (Point point : oldVertices) {
+	        clonedList.add(point.clone(0));
+	    }
+	    return clonedList;
 	}
 	
 	public ArrayList<Point> getNormals()
+	{
+		return getNormals(vertices);
+	}
+	
+	public ArrayList<Point> getOldNormals()
+	{
+		return getNormals(oldVertices);
+	}
+	
+	private ArrayList<Point> getNormals(ArrayList<Point> vertices)
 	{
 		ArrayList<Point> axes = new ArrayList<Point>();
 		// loop over the vertices
@@ -156,6 +201,17 @@ public class Solid
 	public Vector project(Point axis)
 	{
 		ArrayList<Point> vertices = getVertices();
+		return project(vertices,axis);
+	}
+	
+	public Vector oldProject(Point axis)
+	{
+		ArrayList<Point> vertices = getOldVertices();
+		return project(vertices,axis);
+	}
+	
+	public Vector project(ArrayList<Point> vertices,Point axis)
+	{
 		Vector fAxis = new Vector(axis);
 		fAxis.normalize();
 		float min = Vector.dotProduct(fAxis,new Vector(vertices.get(0)));
@@ -175,5 +231,10 @@ public class Solid
 		}
 		Vector proj = new Vector(min, max);
 		return proj;
+	}
+	
+	public static int lerp(int x,int y,float a)
+	{
+		return (int) (x + a * (y - x));
 	}
 }
