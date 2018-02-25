@@ -62,6 +62,7 @@ public class FighterPart extends Solid
 	//parent : FighterPart sur laquelle est attaché celle-ci.
 	//origin : Joint (FPoint) du parent sur lequel est attaché ce FighterPart.
 	//joints : ArrayList des joints dont dispose ce FighterPart.
+	//localCenter : Center coordinates from the position of the Fighter.
 	public FighterPart(FighterPart parent, String Color, Vector origin, int sizeX, int sizeY, String color,
 			ArrayList<Vector> joints)
 	{
