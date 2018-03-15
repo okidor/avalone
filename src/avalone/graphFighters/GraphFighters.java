@@ -48,7 +48,7 @@ public class GraphFighters
 			glapi.unloadTmpTextures(arena.name);
 		}
 		arena = new Arena(newEnvName);
-		fighters.put("unnamed",new Player(50,200));
+		fighters.put("unnamed",new Player(150,300));
 		glapi.loadTmpTextures(newEnvName);
 	}
 	
