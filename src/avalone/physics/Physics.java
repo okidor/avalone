@@ -255,8 +255,7 @@ public class Physics
 				if(i != j)
 				{
 					resolveCollision(solids.get(i),solids.get(j));
-					//hasCollided(solids.get(i),solids.get(j));
-					//hasCollidedDebug(solids.get(i),solids.get(j));
+					//resolveInterpolatedCollision(solids.get(i),solids.get(j));
 				}
 			}
 		}
@@ -264,30 +263,69 @@ public class Physics
 	
 	public static boolean resolveInterpolatedCollision(Solid solid1,Solid solid2)
 	{
-		ArrayList<Point> s1Vertices = solid1.getVertices();
-		ArrayList<Point> s1OldVertices = solid1.getOldVertices();
-		ArrayList<Point> s2Vertices = solid2.getVertices();
-		ArrayList<Point> s2OldVertices = solid2.getOldVertices();
-		for(float fx1 = 0;fx1 <= 1.0f;fx1 = fx1 + 0.1f)	//TODO scale with speed
+		if(solid1.linearVelocity.x == 0 && solid1.linearVelocity.y == 0 && solid2.linearVelocity.x == 0 && solid2.linearVelocity.y == 0)
 		{
-			for(float fy1 = 0;fy1 <= 1.0f;fy1 = fy1 + 0.1f)	//TODO scale with speed
+			return resolveCollision(solid1,solid2);
+		}
+		Solid registeredFakeSolid1 = null;
+		Solid registeredFakeSolid2 = null;
+		float s1StepSizeX = 2;
+		float s1StepSizeY = 2;
+		float s2StepSizeX = 2;
+		float s2StepSizeY = 2;
+		if (solid1.linearVelocity.x != 0)
+		{
+			s1StepSizeX = solid1.getSizeX() / (Math.abs(solid1.linearVelocity.x) * 2);
+		}
+		if (solid1.linearVelocity.y != 0)
+		{
+			s1StepSizeY = solid1.getSizeY() / (Math.abs(solid1.linearVelocity.y) * 2);
+		}
+		if (solid2.linearVelocity.x != 0)
+		{
+			s2StepSizeX = solid2.getSizeX() / (Math.abs(solid2.linearVelocity.x) * 2);
+		}
+		if (solid2.linearVelocity.y != 0)
+		{
+			s2StepSizeY = solid2.getSizeY() / (Math.abs(solid2.linearVelocity.y) * 2);
+		}
+		System.out.println(s1StepSizeX + "," + s1StepSizeY + "," + s2StepSizeX + "," + s2StepSizeY);
+		System.out.println(solid1.linearVelocity.x);
+		//when float goes grom 0 to 1 => goes from newPos to oldPos (see interpSolid function). We want the oldest collision so we simply override
+		for(float fx1 = 0;fx1 <= 1.0f;fx1 = fx1 + s1StepSizeX)
+		{
+			for(float fy1 = 0;fy1 <= 1.0f;fy1 = fy1 + s1StepSizeY)
 			{
-				for(float fx2 = 0;fx2 <= 1.0f;fx2 = fx2 + 0.1f)	//TODO scale with speed
+				for(float fx2 = 0;fx2 <= 1.0f;fx2 = fx2 + s2StepSizeX)
 				{
-					for(float fy2 = 0;fy2 <= 1.0f;fy2 = fy2 + 0.1f)	//TODO scale with speed
+					for(float fy2 = 0;fy2 <= 1.0f;fy2 = fy2 + s2StepSizeY)
 					{
 						Solid fakeSolid1 = solid1.interpSolid(fx1,fy1);
 						Solid fakeSolid2 = solid2.interpSolid(fx2,fy2);
 						boolean collided = resolveCollision(fakeSolid1,fakeSolid2);
 						if(collided)
 						{
-							//TODO register floats
+							registeredFakeSolid1 = fakeSolid1;
+							registeredFakeSolid2 = fakeSolid2;
+							AvaloneGLAPI.getInstance().drawConvex(fakeSolid1.vertices, "brown");
+							AvaloneGLAPI.getInstance().drawConvex(fakeSolid2.vertices, "brown");
+						}
+						else
+						{
+							AvaloneGLAPI.getInstance().drawConvex(fakeSolid1.vertices, "purple");
+							AvaloneGLAPI.getInstance().drawConvex(fakeSolid2.vertices, "purple");
 						}
 					}
 				}
 			}
 		}
-		//TODO use all registered floats
+		if(registeredFakeSolid1 != null && registeredFakeSolid2 != null)
+		{
+			solid1.copyState(registeredFakeSolid1);
+			solid2.copyState(registeredFakeSolid2);
+			//return resolveCollision(solid1,solid2);
+			return true;
+		}
 		return false;
 	}
 	

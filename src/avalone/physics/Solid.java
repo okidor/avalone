@@ -3,7 +3,6 @@ package avalone.physics;
 import java.util.ArrayList;
 
 import avalone.api.util.Vector;
-import avalone.api.lwjgl3.AvaloneGLAPI;
 import avalone.api.util.Point;
 
 public class Solid 
@@ -117,18 +116,69 @@ public class Solid
 	
 	public Solid interpSolid(float fx,float fy)
 	{
-		ArrayList<Point> interpolatedVertices = new ArrayList<Point>();
+		Point[] interpolatedVertices = new Point[vertices.size()];
 		for(int i = 0;i < vertices.size();i++)
 		{
-			interpolatedVertices.add(new Point(lerp(vertices.get(i).x,oldVertices.get(i).x,fx),lerp(vertices.get(i).y,oldVertices.get(i).y,fy)));
+			interpolatedVertices[i] = new Point(lerp(vertices.get(i).x,oldVertices.get(i).x,fx),lerp(vertices.get(i).y,oldVertices.get(i).y,fy));
 		}
-		Solid inter = new Solid(mass,(Point[]) interpolatedVertices.toArray());
+		Solid inter = new Solid(mass, interpolatedVertices);
 		inter.orientation = orientation;
 		inter.linearVelocity = linearVelocity;
 		inter.angularVelocity = angularVelocity;
 		inter.acceleration = acceleration;
 		inter.torque = torque;
 		return inter;
+	}
+	
+	public void copyState(Solid origin)
+	{
+		vertices = origin.vertices;
+		oldVertices = origin.oldVertices;
+		centerOfMass = origin.centerOfMass;
+		oldCenterOfMass = origin.oldCenterOfMass;
+		orientation = origin.orientation;
+		mass = origin.mass;
+		linearVelocity = origin.linearVelocity;
+		angularVelocity = origin.angularVelocity;
+		acceleration = origin.acceleration;
+		torque = origin.torque;
+		restitution = origin.restitution;
+	}
+	
+	public int getSizeX()
+	{
+		int min = vertices.get(0).x;
+		int max = vertices.get(0).x;
+		for(int i = 1;i < vertices.size();i++)
+		{
+			if(vertices.get(i).x < min)
+			{
+				min = vertices.get(i).x;
+			}
+			if(vertices.get(i).x > max)
+			{
+				max = vertices.get(i).x;
+			}
+		}
+		return max - min;
+	}
+	
+	public int getSizeY()
+	{
+		int min = vertices.get(0).y;
+		int max = vertices.get(0).y;
+		for(int i = 1;i < vertices.size();i++)
+		{
+			if(vertices.get(i).y < min)
+			{
+				min = vertices.get(i).y;
+			}
+			if(vertices.get(i).y > max)
+			{
+				max = vertices.get(i).y;
+			}
+		}
+		return max - min;
 	}
 	
 	public ArrayList<Point> getVertices()
