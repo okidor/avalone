@@ -34,9 +34,9 @@ public abstract class Geometry extends BasicFuncs
 	protected int drawFPS;
 	protected int fps;
 	
-	public Geometry(int width, int height, String title) 
+	public Geometry(int width, int height, String title, boolean invertYAxis) 
 	{
-		super(width, height, title);
+		super(width, height, title, invertYAxis);
 		stp = new StringBuilder();
 		lastFPS = getTime();
 	}

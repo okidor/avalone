@@ -12,7 +12,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
-import avalone.api.struct.CustomIndex2DList;
+import avalone.api.util.CustomIndex2DList;
 import avalone.api.util.Point;
 import avalone.negend.global.Const;
 import avalone.negend.global.Var;

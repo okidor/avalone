@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
-import avalone.api.struct.Degrade;
+import avalone.api.util.Degrade;
 import avalone.api.util.Point;
 import avalone.api.util.TexturesLoader;
 import avalone.negend.global.Const;

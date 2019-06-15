@@ -1,4 +1,4 @@
-package avalone.api.struct;
+package avalone.api.util;
 
 import java.util.ArrayList;
 

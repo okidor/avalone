@@ -7,8 +7,8 @@ public class Ignis
 {
 	 private AvaloneGLAPI glapi;
 	 private GraphicBoard board;
-	 private IA ia;
-	 private IA ia2;
+	 private Legacy_IA ia;
+	 private Ignis_IA ia2;
 	 public static int player = 1;
 	 private Element playerElement;
 	 private Element IAElement;
@@ -19,8 +19,8 @@ public class Ignis
 		 board = new GraphicBoard();
 
 		 chooseElement();
-		 ia = new IA(glapi,board,IAElement,3);
-		 ia2 = new IA(glapi,board,playerElement,3);
+		 ia = new Legacy_IA(glapi,board,IAElement,3);
+		 ia2 = new Ignis_IA(board,playerElement,3);
 		 glapi.setWindowTitle("Ignis: player " + player);
 	     loop();
 	 }
@@ -90,6 +90,7 @@ public class Ignis
 	    	 if(player == 1 && !board.block)
 	    	 {
 	    		 //ia2.evaluateCurrentPos();
+	    		 //ia2.evalCurrentSituation();
 	    		 board.clic(glapi);
 	    	 }
 	    	 

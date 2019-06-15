@@ -9,7 +9,7 @@ import java.util.Random;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
 
-public class IA 
+public class Legacy_IA 
 {
 	private AvaloneGLAPI glapi;
 	private Noeud racine;
@@ -22,10 +22,11 @@ public class IA
 	private FileWriter out;
 	private ArrayList<Noeud> leaves;
 	private boolean addLeaves;
+	private boolean debugMode;
 	
 	private Random rand;
 	
-	public IA(AvaloneGLAPI glapi,Board board,Element elem,int prof)
+	public Legacy_IA(AvaloneGLAPI glapi,Board board,Element elem,int prof)
 	{
 		this.glapi = glapi;
 		this.board = board;
@@ -34,6 +35,7 @@ public class IA
 		ownElement = elem;
 		leaves = new ArrayList<Noeud>();
 		addLeaves = true;
+		debugMode = false;
 		rand = new Random();
 		if(elem == Element.Fire)
 		{
@@ -54,12 +56,16 @@ public class IA
 		addLayers();
 		//minimax(racine);
 		double time2 = glapi.getTime();
-		new GraphicTree(glapi,racine,ownElement,enemyElement);
+		if(debugMode)
+		{
+			//new GraphicTree(glapi,racine,ownElement,enemyElement);
+		}
 		move();
 		System.out.println("AI took " + (time2 - time) + " seconds to play");
 		counter++;
-		System.out.println("ia a joué son tour numero " + counter);
+		System.out.println("ia a jouï¿½ son tour numero " + counter);
 	}
+	
 	private void addLayers()
 	{
 		for(int i = 0;i < prof-1;i++)
@@ -247,7 +253,7 @@ public class IA
 		}
 		else if(racine.indexMove == -1)
 		{
-			System.out.println("aucun coup trouvé pour la situation actuelle");
+			System.out.println("aucun coup trouvï¿½ pour la situation actuelle");
 		}
 	}
 	

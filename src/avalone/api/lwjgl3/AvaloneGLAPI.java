@@ -33,9 +33,19 @@ public class AvaloneGLAPI extends Geometry
 		this(width,height,title,"");
     }
 	
+	public AvaloneGLAPI(int width, int height, String title, boolean invertYAxis)
+    {
+		this(width,height,title,"", invertYAxis);
+    }
+	
 	public AvaloneGLAPI(int width, int height, String title,String subFolder)
     {
-		super(width,height,title);
+		this(width,height,title, subFolder, false);
+    }
+	
+	public AvaloneGLAPI(int width, int height, String title,String subFolder, boolean invertYAxis)
+    {
+		super(width,height,title, invertYAxis);
     	modif = new Point();
     	scale = new Point(1,1);
     	this.subFolder = subFolder;

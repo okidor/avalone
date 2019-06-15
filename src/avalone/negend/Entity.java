@@ -2,7 +2,7 @@ package avalone.negend;
 
 import java.util.HashMap;
 
-import avalone.api.struct.CustomIndex2DList;
+import avalone.api.util.CustomIndex2DList;
 import avalone.api.util.Point;
 import avalone.negend.global.Const;
 

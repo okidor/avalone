@@ -1,7 +1,7 @@
 package avalone.negend;
 
 import avalone.api.lwjgl3.AvaloneGLAPI;
-import avalone.api.struct.CustomIndex2DList;
+import avalone.api.util.CustomIndex2DList;
 import avalone.api.util.Point;
 //import avalone.api.util.SoundSystem;
 import avalone.negend.global.Const;

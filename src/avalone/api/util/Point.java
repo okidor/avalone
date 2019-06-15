@@ -34,6 +34,11 @@ public class Point implements Serializable
     	this.z = z;
     }
     
+    public Point clone()
+    {
+    	return new Point(x,y,z);
+    }
+    
     public Point clone(int ad)
     {
     	return new Point(x+ad,y+ad,z+ad);

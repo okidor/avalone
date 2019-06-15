@@ -65,14 +65,16 @@ public class BasicFuncs
 	protected Point scale;
 	private double mouseScrollX;
 	private double mouseScrollY;
+	private boolean invertYAxis;
 	
-	protected BasicFuncs(int width, int height, String title)
+	protected BasicFuncs(int width, int height, String title, boolean invertYAxis)
 	{
 		scroll = new Point();
 		modif = new Point();
 		scale = new Point(1,1);
 		mouseScrollX = 0;
 		mouseScrollY = 0;
+		this.invertYAxis = invertYAxis;
 		/*otherW*/windows = new long[10];
 		keyCallbacks = new GLFWKeyCallback[10];
 		scrollCallbacks = new GLFWScrollCallback[10];
@@ -622,8 +624,14 @@ public class BasicFuncs
 	     glfwShowWindow(windows[indice]);
 	     
 	     GL.createCapabilities();
-	     
-	     glOrtho(0.0, width, 0.0, heigth, -1.0, 1.0);
+	     if(invertYAxis)
+	     {
+	    	 glOrtho(0.0, width, heigth, 0.0, -1.0, 1.0);
+	     }
+	     else
+	     {
+		     glOrtho(0.0, width, 0.0, heigth, -1.0, 1.0);
+	     }
 	     glViewport(0,0,width,heigth);
 	     glEnable(GL_BLEND);
 	     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
